@@ -471,7 +471,7 @@ ERROR
         puts "CPATH: #{ENV['CPATH']}"
         puts "CPPATH: #{ENV['CPPATH']}"
         puts "LIBRARY_PATH: #{ENV['LIBRARY_PATH']}"
-        env_vars       = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:#{libxmlsec1_include}:#{libxml_include}:$CPATH CPPATH=#{yaml_include}:#{libxmlsec1_include}:#{libxml_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{libxmlsec1_lib}:#{post_libxmlsec1_lib}:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
+        env_vars       = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:#{libxmlsec1_include}:#{libxml_include}:$CPATH CPPATH=#{yaml_include}:#{libxmlsec1_include}:#{libxml_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{libxmlsec1_lib}:#{post_libxmlsec1_lib}:$LIBRARY_PATH LD_LIBRARY_PATH=#{yaml_lib}:#{libxmlsec1_lib}:#{post_libxmlsec1_lib}:$LD_LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
         env_vars      += " BUNDLER_LIB_PATH=#{bundler_path}" if ruby_version == "ruby-1.8.7"
         puts "ENV VARS: #{env_vars}"
         bundler_output << pipe("#{env_vars} #{bundle_command} --no-clean 2>&1")
