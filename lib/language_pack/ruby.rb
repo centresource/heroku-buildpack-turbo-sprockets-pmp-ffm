@@ -462,7 +462,7 @@ ERROR
         yaml_lib             = File.expand_path("#{libyaml_dir}/lib")
         libxmlsec1_include   = File.expand_path("#{libxmlsec1_dir}/include/xmlsec1")
         libxml_include       = "/usr/include/libxml2"
-        libxmlsec1_lib       = "/app/#{libxmlsec1_dir}/lib"
+        libxmlsec1_lib       = File.expand_path("#{libxmlsec1_dir}/lib")
         pwd                  = run("pwd").chomp
         bundler_path         = "#{pwd}/#{slug_vendor_base}/gems/#{BUNDLER_GEM_PATH}/lib"
         # we need to set BUNDLE_CONFIG and BUNDLE_GEMFILE for
