@@ -467,7 +467,10 @@ ERROR
         bundler_path         = "#{pwd}/#{slug_vendor_base}/gems/#{BUNDLER_GEM_PATH}/lib"
         # we need to set BUNDLE_CONFIG and BUNDLE_GEMFILE for
         # codon since it uses bundler.
-        env_vars       = "env CFLAGS=-DXMLSEC_CRYPTO_OPENSSL BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:#{libxmlsec1_include}:#{libxml_include}:/usr/include:/usr/local/include:$CPATH CPPATH=#{yaml_include}:#{libxmlsec1_include}:#{libxml_include}:/usr/include:/usr/local/include:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{libxmlsec1_lib}:/usr/lib:/usr/local/lib:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
+        puts "CPATH: #{$CPATH}"
+        puts "CPPATH: #{$CPPATH}"
+        puts "LIBRARY_PATH: #{$LIBRARY_PATH}"
+        env_vars       = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:#{libxmlsec1_include}:#{libxml_include}:$CPATH CPPATH=#{yaml_include}:#{libxmlsec1_include}:#{libxml_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{libxmlsec1_lib}:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
         env_vars      += " BUNDLER_LIB_PATH=#{bundler_path}" if ruby_version == "ruby-1.8.7"
         puts "ENV VARS: #{env_vars}"
         bundler_output << pipe("#{env_vars} #{bundle_command} --no-clean 2>&1")
