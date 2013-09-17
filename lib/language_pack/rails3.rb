@@ -38,9 +38,11 @@ private
   def run_assets_precompile_rake_task
     puts "ARGH!!!!"
     log("assets_precompile") do
+      puts "EFFIT!!!!"
       setup_database_url_env
 
       if rake_task_defined?("assets:precompile")
+        puts "EFFIT AGAIN!!!!"
         topic("Preparing app for Rails asset pipeline")
         if File.exists?("public/assets/manifest.yml")
           puts "Detected manifest.yml, assuming assets were compiled locally"
