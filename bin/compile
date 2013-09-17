@@ -1,11 +1,5 @@
 #!/usr/bin/env ruby
 
-LIBXMLSEC1_BINARY = "https://cs-heroku-binaries.s3.amazonaws.com/libxmlsec1-1.2.19.tar.gz"
-LIBXMLSEC1_VENDOR = "vendor/libxmlsec1"
-
-system("mkdir -p #{File.dirname(__FILE__)}/../#{LIBXMLSEC1_VENDOR}")
-system("curl #{LIBXMLSEC1_BINARY} -o - | tar -xz -C #{File.dirname(__FILE__)}/../#{LIBXMLSEC1_VENDOR} -f -")
-
 # sync output
 $stdout.sync = true
 

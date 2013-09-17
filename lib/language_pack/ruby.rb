@@ -12,6 +12,9 @@ class LanguagePack::Ruby < LanguagePack::Base
   BUILDPACK_VERSION   = "v59"
   LIBYAML_VERSION     = "0.1.4"
   LIBYAML_PATH        = "libyaml-#{LIBYAML_VERSION}"
+  LIBXMLSEC1_VERSION  = "1.2.19"
+  LIBXMLSEC1_PATH     = "libxmlsec1-#{LIBXMLSEC1_VERSION}"
+  LIBXMLSEC1_URL      = "https://s3.amazonaws.com/cs-heroku-binaries"
   BUNDLER_VERSION     = "1.3.2"
   BUNDLER_GEM_PATH    = "bundler-#{BUNDLER_VERSION}"
   NODE_VERSION        = "0.4.7"
@@ -396,6 +399,15 @@ ERROR
     end
   end
 
+  # install libxmlsec1 into the LP to be referenced for psych compilation
+  # @param [String] tmpdir to store the libxmlsec1 files
+  def install_libxmlsec1(dir)
+    FileUtils.mkdir_p dir
+    Dir.chdir(dir) do |dir|
+      run("curl #{LIBXMLSEC1_URL}/#{LIBXMLSEC1_PATH}.tar.gz -s -o - | tar xzf -")
+    end
+  end
+
   # remove `vendor/bundle` that comes from the git repo
   # in case there are native ext.
   # users should be using `bundle pack` instead.
@@ -442,15 +454,19 @@ ERROR
       Dir.mktmpdir("libyaml-") do |tmpdir|
         libyaml_dir = "#{tmpdir}/#{LIBYAML_PATH}"
         install_libyaml(libyaml_dir)
+        libxmlsec1_dir = "vendor/libxmlsec1-#{LIBXMLSEC1_VERSION}"
+        install_libxmlsec1(libxmlsec1_dir)
 
         # need to setup compile environment for the psych gem
-        yaml_include   = File.expand_path("#{libyaml_dir}/include")
-        yaml_lib       = File.expand_path("#{libyaml_dir}/lib")
-        pwd            = run("pwd").chomp
-        bundler_path   = "#{pwd}/#{slug_vendor_base}/gems/#{BUNDLER_GEM_PATH}/lib"
+        yaml_include         = File.expand_path("#{libyaml_dir}/include")
+        yaml_lib             = File.expand_path("#{libyaml_dir}/lib")
+        libxmlsec1_include   = File.expand_path("#{libxmlsec1_dir}/include")
+        libxmlsec1_lib       = File.expand_path("#{libxmlsec1_dir}/lib")
+        pwd                  = run("pwd").chomp
+        bundler_path         = "#{pwd}/#{slug_vendor_base}/gems/#{BUNDLER_GEM_PATH}/lib"
         # we need to set BUNDLE_CONFIG and BUNDLE_GEMFILE for
         # codon since it uses bundler.
-        env_vars       = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:$CPATH CPPATH=#{yaml_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
+        env_vars       = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:$CPATH CPPATH=#{yaml_include}:#{libxmlsec1_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{libxmlsec1_lib}:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
         env_vars      += " BUNDLER_LIB_PATH=#{bundler_path}" if ruby_version == "ruby-1.8.7"
         puts "Running: #{bundle_command}"
         bundler_output << pipe("#{env_vars} #{bundle_command} --no-clean 2>&1")
