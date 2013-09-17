@@ -400,10 +400,11 @@ ERROR
   end
 
   # install libxmlsec1 into the LP to be referenced for psych compilation
-  # @param [String] tmpdir to store the libxmlsec1 files
+  # @param [String] dir to store the libxmlsec1 files
   def install_libxmlsec1(dir)
     FileUtils.mkdir_p dir
     Dir.chdir(dir) do |dir|
+      puts "CURLING: #{LIBXMLSEC1_URL}/#{LIBXMLSEC1_PATH}.tar.gz"
       run("curl #{LIBXMLSEC1_URL}/#{LIBXMLSEC1_PATH}.tar.gz -s -o - | tar xzf -")
     end
   end
