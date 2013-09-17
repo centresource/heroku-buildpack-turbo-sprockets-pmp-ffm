@@ -36,6 +36,7 @@ private
 
   # runs the tasks for the Rails 3.1 asset pipeline
   def run_assets_precompile_rake_task
+    puts "ARGH!!!!"
     log("assets_precompile") do
       setup_database_url_env
 

@@ -77,11 +77,17 @@ class LanguagePack::Ruby < LanguagePack::Base
     setup_language_pack_environment
     setup_profiled
     allow_git do
+      puts "INSTALLING LANGUAGE PACK GEMS"
       install_language_pack_gems
+      puts "BUILDING BUNDLER"
       build_bundler
+      puts "CREATING DB YML"
       create_database_yml
+      puts "INSTALLING BINARIES"
       install_binaries
+      puts "COMPILING ASSETS"
       run_assets_precompile_rake_task
+      puts "LATE SLUG IGNORE"
       late_slug_ignore
     end
   end
