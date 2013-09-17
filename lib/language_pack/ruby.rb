@@ -461,7 +461,7 @@ ERROR
         # need to setup compile environment for the psych gem
         yaml_include         = File.expand_path("#{libyaml_dir}/include")
         yaml_lib             = File.expand_path("#{libyaml_dir}/lib")
-        libxmlsec1_include   = File.expand_path("#{libxmlsec1_dir}/include")
+        libxmlsec1_include   = File.expand_path("#{libxmlsec1_dir}/include/xmlsec1")
         libxmlsec1_lib       = File.expand_path("#{libxmlsec1_dir}/lib")
         pwd                  = run("pwd").chomp
         bundler_path         = "#{pwd}/#{slug_vendor_base}/gems/#{BUNDLER_GEM_PATH}/lib"
