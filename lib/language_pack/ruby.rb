@@ -427,7 +427,7 @@ ERROR
   def build_bundler
     log("bundle") do
       bundle_without = ENV["BUNDLE_WITHOUT"] || "development:test"
-      bundle_command = "bundle install --without #{bundle_without} --path vendor/bundle --binstubs vendor/bundle/bin --verbose"
+      bundle_command = "bundle install --without #{bundle_without} --path vendor/bundle --binstubs vendor/bundle/bin"
 
       unless File.exist?("Gemfile.lock")
         error "Gemfile.lock is required. Please run \"bundle install\" locally\nand commit your Gemfile.lock."
@@ -462,6 +462,7 @@ ERROR
         yaml_include         = File.expand_path("#{libyaml_dir}/include")
         yaml_lib             = File.expand_path("#{libyaml_dir}/lib")
         libxmlsec1_include   = File.expand_path("#{libxmlsec1_dir}/include/xmlsec1")
+        libxml_include   = "/usr/include/libxml2"
         libxmlsec1_lib       = File.expand_path("#{libxmlsec1_dir}/lib")
         pwd                  = run("pwd").chomp
         bundler_path         = "#{pwd}/#{slug_vendor_base}/gems/#{BUNDLER_GEM_PATH}/lib"
@@ -471,7 +472,7 @@ ERROR
         puts Dir.glob("#{libxmlsec1_include}/*").join("\n")
         puts "LIBXMLSEC1 LIB DIRECTORY:"
         puts Dir.glob("#{libxmlsec1_lib}/*").join("\n")
-        env_vars       = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:#{libxmlsec1_include}:$CPATH CPPATH=#{yaml_include}:#{libxmlsec1_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{libxmlsec1_lib}:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
+        env_vars       = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:#{libxmlsec1_include}:#{libxml_include}:$CPATH CPPATH=#{yaml_include}:#{libxmlsec1_include}:#{libxml_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{libxmlsec1_lib}:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
         env_vars      += " BUNDLER_LIB_PATH=#{bundler_path}" if ruby_version == "ruby-1.8.7"
         puts "Running: #{bundle_command}"
         puts "ENV VARS: #{env_vars}"
