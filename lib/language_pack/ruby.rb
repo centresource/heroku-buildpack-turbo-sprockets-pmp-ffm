@@ -467,8 +467,10 @@ ERROR
         bundler_path         = "#{pwd}/#{slug_vendor_base}/gems/#{BUNDLER_GEM_PATH}/lib"
         # we need to set BUNDLE_CONFIG and BUNDLE_GEMFILE for
         # codon since it uses bundler.
-        puts "LIBXMLSEC1 INSTALL DIRECTORY:"
-        puts Dir.glob("#{libxmlsec1_dir}/*").join("\n")
+        puts "LIBXMLSEC1 INCLUDE DIRECTORY:"
+        puts Dir.glob("#{libxmlsec1_include}/*").join("\n")
+        puts "LIBXMLSEC1 LIB DIRECTORY:"
+        puts Dir.glob("#{libxmlsec1_lib}/*").join("\n")
         env_vars       = "env BUNDLE_GEMFILE=#{pwd}/Gemfile BUNDLE_CONFIG=#{pwd}/.bundle/config CPATH=#{yaml_include}:#{libxmlsec1_include}:$CPATH CPPATH=#{yaml_include}:#{libxmlsec1_include}:$CPPATH LIBRARY_PATH=#{yaml_lib}:#{libxmlsec1_lib}:$LIBRARY_PATH RUBYOPT=\"#{syck_hack}\""
         env_vars      += " BUNDLER_LIB_PATH=#{bundler_path}" if ruby_version == "ruby-1.8.7"
         puts "Running: #{bundle_command}"
